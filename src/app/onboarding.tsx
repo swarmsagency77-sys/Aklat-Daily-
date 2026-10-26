@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { ActivityIndicator, Pressable, View } from 'react-native';
 import { Button, Card, Chip, Chips, Field, Screen, Text, styles as ui } from '@/components/ui';
 import { useStore } from '@/lib/store';
-import { CATS, DISLIKES } from '@/lib/catalog';
+import { DislikePicker } from '@/components/DislikePicker';
+import { CATS } from '@/lib/catalog';
 import { buildWeek, uid } from '@/lib/model';
 import { askPermission } from '@/lib/notifications';
 import { colors, radius } from '@/lib/theme';
@@ -84,7 +85,7 @@ export default function Onboarding() {
           <Text weight="bold" style={{ fontSize: 13, color: colors.muted }}>بحب</Text>
           <Chips>{CATS.map((c) => <Chip key={c} label={c} on={likes.includes(c)} onPress={() => setLikes(toggle(likes, c))} />)}</Chips>
           <Text weight="bold" style={{ fontSize: 13, color: colors.muted }}>مش باكل</Text>
-          <Chips>{DISLIKES.map((c) => <Chip key={c} label={c} negative on={dislikes.includes(c)} onPress={() => setDislikes(toggle(dislikes, c))} />)}</Chips>
+          <DislikePicker value={dislikes} onChange={setDislikes} />
           <Button title="التالي" onPress={() => setStep(3)} />
         </>
       )}

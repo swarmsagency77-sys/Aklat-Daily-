@@ -1,7 +1,8 @@
 import { TextInput, View } from 'react-native';
 import { Button, Card, Chip, Chips, Screen, Text } from '@/components/ui';
 import { useStore } from '@/lib/store';
-import { CATS, DISLIKES } from '@/lib/catalog';
+import { DislikePicker } from '@/components/DislikePicker';
+import { CATS } from '@/lib/catalog';
 import { Member, uid } from '@/lib/model';
 import { colors, fonts } from '@/lib/theme';
 
@@ -36,7 +37,7 @@ export default function Home() {
           <Text weight="bold" style={{ fontSize: 12, color: colors.muted }}>بيحب</Text>
           <Chips>{CATS.map((c) => <Chip key={c} label={c} on={p.likes.includes(c)} onPress={() => setMember(p.id, { likes: toggle(p.likes, c) })} />)}</Chips>
           <Text weight="bold" style={{ fontSize: 12, color: colors.muted }}>مش بياكل</Text>
-          <Chips>{DISLIKES.map((c) => <Chip key={c} label={c} negative on={p.dislikes.includes(c)} onPress={() => setMember(p.id, { dislikes: toggle(p.dislikes, c) })} />)}</Chips>
+          <DislikePicker value={p.dislikes} onChange={(dislikes) => setMember(p.id, { dislikes })} />
         </Card>
       ))}
 
