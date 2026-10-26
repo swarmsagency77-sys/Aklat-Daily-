@@ -67,8 +67,13 @@ export function initialState(): State {
 }
 
 /* ---------- Meal planning ---------- */
-const dislikes = (s: State) => new Set(s.members.flatMap((p) => p.dislikes));
-export const allowed = (s: State, meal: Meal) => !meal.has.some((h) => dislikes(s).has(h));
+// Whole-word match, also trying each word without a leading "و" ("وكزبرة" → "كزبرة").
+const mentions = (text: string, item: string) =>
+  [text, text.replace(/(^|\s)و(?=\S{3})/g, '$1')].some((t) => ` ${t} `.includes(` ${item} `));
+export const allowed = (s: State, meal: Meal) => {
+  const texts = [meal.name, ...meal.has, ...meal.ing.map(([item]) => item)];
+  return !s.members.some((p) => p.dislikes.some((d) => texts.some((t) => mentions(t, d))));
+};
 const score = (s: State, meal: Meal) =>
   s.members.reduce((n, p) => n + meal.cats.filter((c) => p.likes.includes(c)).length, 0) +
   (s.favs.includes(meal.id) ? 1.5 : 0);
